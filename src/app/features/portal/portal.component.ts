@@ -19,8 +19,10 @@ export class PortalComponent implements OnInit {
 
   ngOnInit() {
     this.text = PORTAL_TEXT[this.locale];
-    this.examBasicInfoList = this.portalService.getExamBasicInfoFromRes();
-    this.ready = true;
+    this.portalService.getExamBasicInfoFromRes().subscribe(res => {
+      this.examBasicInfoList = res;
+      this.ready = true;
+    });
   }
 
   onViewClick(id: string) {
