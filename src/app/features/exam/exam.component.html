@@ -1,0 +1,71 @@
+<ng-container *ngIf="ready">
+  <header class="d-flex justify-content-center py-3">
+    <ul class="nav nav-pills">
+      <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+        <div class="btn-group me-2" role="group" aria-label="First group">
+          <button
+            *ngFor="let question of questionList; let questionIndex = index"
+            type="button"
+            class="btn btn-secondary"
+            [ngClass]="{ active: questionIndex === currentQuestionIndex }"
+            (click)="onQuestionButtonClick(questionIndex)"
+          >
+            {{ questionIndex + 1 }}
+          </button>
+        </div>
+      </div>
+    </ul>
+  </header>
+  <div class="bd-cheatsheet container-fluid bg-body" *ngIf="currentQuestion">
+    <section id="forms">
+      <fieldset class="mb-3">
+        <legend>{{ currentQuestionIndex + 1 }}. {{ currentQuestion.question }}</legend>
+        <div *ngIf="currentQuestion.type === singleSelect">
+          <div class="mb-3 form-check" *ngFor="let option of currentQuestion.options; let optionIndex = index">
+            <input
+              type="radio"
+              name="radios"
+              [attr.value]="option.id"
+              [attr.id]="option.id"
+              class="form-check-input"
+              [ngClass]="{
+                'is-valid': showAnswer && currentQuestion.answer.includes(option.id),
+                'is-invalid':
+                  showAnswer && option.id === singleSelectAnswer && !currentQuestion.answer.includes(option.id)
+              }"
+              (click)="onRadioClick(option.id)"
+            />
+            <label class="form-check-label" [attr.for]="option.id">{{ option.detail }}</label>
+          </div>
+        </div>
+        <div *ngIf="currentQuestion.type === multipleSelect">
+          <div class="mb-3 form-check" *ngFor="let option of currentQuestion.options; let optionIndex = index">
+            <input
+              type="checkbox"
+              [attr.id]="option.id"
+              class="form-check-input"
+              [ngClass]="{
+                'is-valid': showAnswer && currentQuestion.answer.includes(option.id),
+                'is-invalid':
+                  showAnswer && multipleSelectAnswers[optionIndex] && !currentQuestion.answer.includes(option.id)
+              }"
+              [(ngModel)]="multipleSelectAnswers[optionIndex]"
+            />
+            <label class="form-check-label" [attr.for]="option.id">{{ option.detail }}</label>
+          </div>
+        </div>
+      </fieldset>
+    </section>
+    <div class="bd-example">
+      <button type="button" class="btn btn-primary operation-btn" (click)="onSubmitClick()">
+        {{ text['exam_submit_answer_btn_label'] }}
+      </button>
+      <button type="button" class="btn btn-primary operation-btn" (click)="onBackClick()">
+        {{ text['exam_submit_back_btn_label'] }}
+      </button>
+      <button type="button" class="btn btn-primary operation-btn" (click)="onNextClick()">
+        {{ text['exam_submit_next_btn_label'] }}
+      </button>
+    </div>
+  </div>
+</ng-container>

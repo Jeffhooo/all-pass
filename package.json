@@ -3,11 +3,13 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
+    "start": "ng serve --baseHref=/all-pass/",
+    "build": "ng build --baseHref=/all-pass/",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "format:check": "prettier --list-different \"src/{app,environments,assets,resource}/**/*{.ts,.js,.json,.html}\"",
+    "format:fix": "prettier --write --list-different \"src/{app,environments,assets,resource}/**/*{.ts,.js,.json,.html}\""
   },
   "private": true,
   "dependencies": {
@@ -42,6 +44,15 @@
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.15.0",
-    "typescript": "~3.5.3"
+    "typescript": "~3.5.3",
+    "prettier": "~1.16.4"
+  },
+  "prettier": {
+    "bracketSpacing": true,
+    "singleQuote": true,
+    "printWidth": 120,
+    "tabWidth": 2,
+    "trailingComma": "none",
+    "semi": true
   }
 }
