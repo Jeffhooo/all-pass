@@ -34,13 +34,15 @@ export class ExamComponent implements OnInit {
     this.activatedRoute.queryParams.subscribe(params => {
       this.examId = params['examId'];
       if (this.examId) {
-        this.questionList = this.examService.getQuestionsFromRes(this.examId);
-        if (this.questionList.length > 0) {
-          this.currentQuestion = this.questionList[0];
-          this.currentQuestionIndex = 0;
-          this.initQuestion();
-        }
-        this.ready = true;
+        this.examService.getQuestionsFromRes(this.examId).subscribe(res => {
+          this.questionList = res;
+          if (this.questionList.length > 0) {
+            this.currentQuestion = this.questionList[0];
+            this.currentQuestionIndex = 0;
+            this.initQuestion();
+          }
+          this.ready = true;
+        });
       }
     });
   }
