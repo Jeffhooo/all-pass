@@ -1,8 +1,8 @@
 [
   {
-    "id": "aws-saa",
-    "name": "AWS Solutions Architect Associate",
-    "description": "AWS Solutions Architect Associate Practice Test",
+    "id": "aws-saa-introduction",
+    "name": "AWS Solutions Architect Associate Introduction",
+    "description": "AWS Solutions Architect Associate Introduction",
     "pictureUrl": "assets/pic/aws.jpeg",
     "lastUpdateTime": "2021/04/23"
   }
