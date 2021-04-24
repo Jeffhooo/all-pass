@@ -17,6 +17,9 @@ export class ExamComponent implements OnInit {
 
   // question
   questionList: QuestionVo[] = [];
+  currentPageIndex = 0;
+  readonly pageSize = 5;
+  curQuestionIdxList: number[];
   currentQuestion: QuestionVo;
   currentQuestionIndex = 0;
   readonly singleSelect = QuestionType.SINGLE_SELECT;
@@ -40,6 +43,7 @@ export class ExamComponent implements OnInit {
             this.currentQuestion = this.questionList[0];
             this.currentQuestionIndex = 0;
             this.initQuestion();
+            this.updateQuestionList();
           }
           this.ready = true;
         });
@@ -51,6 +55,7 @@ export class ExamComponent implements OnInit {
     this.showAnswer = false;
     this.currentQuestion = this.questionList[index];
     this.currentQuestionIndex = index;
+    this.updateQuestionList();
   }
 
   onSubmitClick() {
@@ -66,6 +71,7 @@ export class ExamComponent implements OnInit {
       this.currentQuestionIndex--;
       this.currentQuestion = this.questionList[this.currentQuestionIndex];
       this.initQuestion();
+      this.updateQuestionList();
     }
   }
 
@@ -74,6 +80,7 @@ export class ExamComponent implements OnInit {
       this.currentQuestionIndex++;
       this.currentQuestion = this.questionList[this.currentQuestionIndex];
       this.initQuestion();
+      this.updateQuestionList();
     }
   }
 
@@ -81,5 +88,16 @@ export class ExamComponent implements OnInit {
     this.singleSelectAnswer = '';
     this.multipleSelectAnswers = [];
     this.showAnswer = false;
+  }
+
+  private updateQuestionList() {
+    const questionList: number[] = [];
+    this.currentPageIndex = Math.floor(this.currentQuestionIndex / this.pageSize);
+    const start = this.currentPageIndex * this.pageSize;
+    const end = Math.min(start + this.pageSize, this.questionList.length);
+    for (let i = start; i < end; i++) {
+      questionList.push(i);
+    }
+    this.curQuestionIdxList = questionList;
   }
 }

@@ -4,7 +4,7 @@
       <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
         <div class="btn-group me-2" role="group" aria-label="First group">
           <button
-            *ngFor="let question of questionList; let questionIndex = index"
+            *ngFor="let questionIndex of curQuestionIdxList"
             type="button"
             class="btn btn-secondary"
             [ngClass]="{ active: questionIndex === currentQuestionIndex }"
