@@ -49,7 +49,8 @@ export class ExamComponent implements OnInit {
           if (this.questionList.length > 0) {
             this.curQuestion = this.questionList[0];
             this.curQuestionIdx = 0;
-            this.initPagination();
+            this.curPageIdx = 0;
+            this.updatePagination();
             this.updateQuestionIdxList();
             this.initQuestion();
           }
@@ -73,21 +74,23 @@ export class ExamComponent implements OnInit {
     this.singleSelectAnswer = optionId;
   }
 
-  onBackClick() {
+  onPreviousQuestionClick() {
     if (this.curQuestionIdx > 0) {
       this.curQuestionIdx--;
       this.curQuestion = this.questionList[this.curQuestionIdx];
       this.curPageIdx = Math.floor(this.curQuestionIdx / this.pageSize);
+      this.updatePagination();
       this.initQuestion();
       this.updateQuestionIdxList();
     }
   }
 
-  onNextClick() {
+  onNextQuestionClick() {
     if (this.curQuestionIdx < this.questionList.length - 1) {
       this.curQuestionIdx++;
       this.curQuestion = this.questionList[this.curQuestionIdx];
       this.curPageIdx = Math.floor(this.curQuestionIdx / this.pageSize);
+      this.updatePagination();
       this.initQuestion();
       this.updateQuestionIdxList();
     }
@@ -99,12 +102,9 @@ export class ExamComponent implements OnInit {
     this.showAnswer = false;
   }
 
-  private initPagination() {
-    this.curPageIdx = 0;
-    this.disablePrevPage = true;
-    if ((this.curPageIdx + 1) * this.pageSize >= this.questionList.length) {
-      this.disableNextPage = true;
-    }
+  private updatePagination() {
+    this.disablePrevPage = this.curPageIdx <= 0;
+    this.disableNextPage = (this.curPageIdx + 1) * this.pageSize >= this.questionList.length;
   }
 
   private updateQuestionIdxList() {
