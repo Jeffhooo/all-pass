@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ExamService } from './service/exam.service';
 import { EXAM_TEXT } from '../../../resource/text/exam/exam.text';
 import { QuestionType, QuestionVo } from './vo/question.vo';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-exam',
@@ -37,7 +37,7 @@ export class ExamComponent implements OnInit {
   disablePrevPage = true;
   disableNextPage = false;
 
-  constructor(private examService: ExamService, private activatedRoute: ActivatedRoute) {}
+  constructor(private examService: ExamService, private activatedRoute: ActivatedRoute, private router: Router) {}
 
   ngOnInit() {
     this.text = EXAM_TEXT[this.locale];
@@ -141,5 +141,9 @@ export class ExamComponent implements OnInit {
     if ((this.curPageIdx + 1) * this.pageSize >= this.questionList.length) {
       this.disableNextPage = true;
     }
+  }
+
+  onTitleClick() {
+    this.router.navigate(['']);
   }
 }
