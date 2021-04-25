@@ -49,8 +49,9 @@ export class ExamComponent implements OnInit {
           if (this.questionList.length > 0) {
             this.curQuestion = this.questionList[0];
             this.curQuestionIdx = 0;
+            this.initPagination();
+            this.updateQuestionIdxList();
             this.initQuestion();
-            this.updateQuestionList();
           }
           this.ready = true;
         });
@@ -78,7 +79,7 @@ export class ExamComponent implements OnInit {
       this.curQuestion = this.questionList[this.curQuestionIdx];
       this.curPageIdx = Math.floor(this.curQuestionIdx / this.pageSize);
       this.initQuestion();
-      this.updateQuestionList();
+      this.updateQuestionIdxList();
     }
   }
 
@@ -88,7 +89,7 @@ export class ExamComponent implements OnInit {
       this.curQuestion = this.questionList[this.curQuestionIdx];
       this.curPageIdx = Math.floor(this.curQuestionIdx / this.pageSize);
       this.initQuestion();
-      this.updateQuestionList();
+      this.updateQuestionIdxList();
     }
   }
 
@@ -98,7 +99,15 @@ export class ExamComponent implements OnInit {
     this.showAnswer = false;
   }
 
-  private updateQuestionList() {
+  private initPagination() {
+    this.curPageIdx = 0;
+    this.disablePrevPage = true;
+    if ((this.curPageIdx + 1) * this.pageSize >= this.questionList.length) {
+      this.disableNextPage = true;
+    }
+  }
+
+  private updateQuestionIdxList() {
     const questionList: number[] = [];
     const start = this.curPageIdx * this.pageSize;
     const end = Math.min(start + this.pageSize, this.questionList.length);
@@ -113,10 +122,9 @@ export class ExamComponent implements OnInit {
   }
 
   onPreviousPageButtonClick() {
-    console.log('onPreviousPageButtonClick, currentPageIndex: ', this.curPageIdx);
     if (this.curPageIdx > 0) {
       this.curPageIdx--;
-      this.updateQuestionList();
+      this.updateQuestionIdxList();
       this.disableNextPage = false;
     }
     if (this.curPageIdx === 0) {
@@ -125,10 +133,9 @@ export class ExamComponent implements OnInit {
   }
 
   onNextPageButtonClick() {
-    console.log('onNextPageButtonClick, currentPageIndex: ', this.curPageIdx);
     if ((this.curPageIdx + 1) * this.pageSize < this.questionList.length) {
       this.curPageIdx++;
-      this.updateQuestionList();
+      this.updateQuestionIdxList();
       this.disablePrevPage = false;
     }
     if ((this.curPageIdx + 1) * this.pageSize >= this.questionList.length) {
