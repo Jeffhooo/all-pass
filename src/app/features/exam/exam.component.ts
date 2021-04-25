@@ -30,6 +30,9 @@ export class ExamComponent implements OnInit {
   singleSelectAnswer: string;
   multipleSelectAnswers: boolean[] = [];
 
+  // explanation
+  explanationExpand = false;
+
   constructor(private examService: ExamService, private activatedRoute: ActivatedRoute) {}
 
   ngOnInit() {
@@ -99,5 +102,9 @@ export class ExamComponent implements OnInit {
       questionList.push(i);
     }
     this.curQuestionIdxList = questionList;
+  }
+
+  onExplanationButtonClick() {
+    this.explanationExpand = !this.explanationExpand;
   }
 }
