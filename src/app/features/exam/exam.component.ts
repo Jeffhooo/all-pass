@@ -17,11 +17,9 @@ export class ExamComponent implements OnInit {
 
   // question
   questionList: QuestionVo[] = [];
-  currentPageIndex = 0;
-  readonly pageSize = 5;
-  curQuestionIdxList: number[];
-  currentQuestion: QuestionVo;
-  currentQuestionIndex = 0;
+  questionIdxList: number[];
+  curQuestion: QuestionVo;
+  curQuestionIdx = 0;
   readonly singleSelect = QuestionType.SINGLE_SELECT;
   readonly multipleSelect = QuestionType.MULTIPLE_SELECT;
 
@@ -33,6 +31,12 @@ export class ExamComponent implements OnInit {
   // explanation
   explanationExpand = false;
 
+  // pagination
+  readonly pageSize = 5;
+  curPageIdx = 0;
+  disablePrevPage = true;
+  disableNextPage = false;
+
   constructor(private examService: ExamService, private activatedRoute: ActivatedRoute) {}
 
   ngOnInit() {
@@ -43,8 +47,8 @@ export class ExamComponent implements OnInit {
         this.examService.getQuestionsFromRes(this.examId).subscribe(res => {
           this.questionList = res;
           if (this.questionList.length > 0) {
-            this.currentQuestion = this.questionList[0];
-            this.currentQuestionIndex = 0;
+            this.curQuestion = this.questionList[0];
+            this.curQuestionIdx = 0;
             this.initQuestion();
             this.updateQuestionList();
           }
@@ -56,9 +60,8 @@ export class ExamComponent implements OnInit {
 
   onQuestionButtonClick(index: number) {
     this.showAnswer = false;
-    this.currentQuestion = this.questionList[index];
-    this.currentQuestionIndex = index;
-    this.updateQuestionList();
+    this.curQuestion = this.questionList[index];
+    this.curQuestionIdx = index;
   }
 
   onSubmitClick() {
@@ -70,18 +73,20 @@ export class ExamComponent implements OnInit {
   }
 
   onBackClick() {
-    if (this.currentQuestionIndex > 0) {
-      this.currentQuestionIndex--;
-      this.currentQuestion = this.questionList[this.currentQuestionIndex];
+    if (this.curQuestionIdx > 0) {
+      this.curQuestionIdx--;
+      this.curQuestion = this.questionList[this.curQuestionIdx];
+      this.curPageIdx = Math.floor(this.curQuestionIdx / this.pageSize);
       this.initQuestion();
       this.updateQuestionList();
     }
   }
 
   onNextClick() {
-    if (this.currentQuestionIndex < this.questionList.length - 1) {
-      this.currentQuestionIndex++;
-      this.currentQuestion = this.questionList[this.currentQuestionIndex];
+    if (this.curQuestionIdx < this.questionList.length - 1) {
+      this.curQuestionIdx++;
+      this.curQuestion = this.questionList[this.curQuestionIdx];
+      this.curPageIdx = Math.floor(this.curQuestionIdx / this.pageSize);
       this.initQuestion();
       this.updateQuestionList();
     }
@@ -95,16 +100,39 @@ export class ExamComponent implements OnInit {
 
   private updateQuestionList() {
     const questionList: number[] = [];
-    this.currentPageIndex = Math.floor(this.currentQuestionIndex / this.pageSize);
-    const start = this.currentPageIndex * this.pageSize;
+    const start = this.curPageIdx * this.pageSize;
     const end = Math.min(start + this.pageSize, this.questionList.length);
     for (let i = start; i < end; i++) {
       questionList.push(i);
     }
-    this.curQuestionIdxList = questionList;
+    this.questionIdxList = questionList;
   }
 
   onExplanationButtonClick() {
     this.explanationExpand = !this.explanationExpand;
+  }
+
+  onPreviousPageButtonClick() {
+    console.log('onPreviousPageButtonClick, currentPageIndex: ', this.curPageIdx);
+    if (this.curPageIdx > 0) {
+      this.curPageIdx--;
+      this.updateQuestionList();
+      this.disableNextPage = false;
+    }
+    if (this.curPageIdx === 0) {
+      this.disablePrevPage = true;
+    }
+  }
+
+  onNextPageButtonClick() {
+    console.log('onNextPageButtonClick, currentPageIndex: ', this.curPageIdx);
+    if ((this.curPageIdx + 1) * this.pageSize < this.questionList.length) {
+      this.curPageIdx++;
+      this.updateQuestionList();
+      this.disablePrevPage = false;
+    }
+    if ((this.curPageIdx + 1) * this.pageSize >= this.questionList.length) {
+      this.disableNextPage = true;
+    }
   }
 }

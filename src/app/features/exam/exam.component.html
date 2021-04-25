@@ -1,27 +1,42 @@
 <ng-container *ngIf="ready">
   <header class="d-flex justify-content-center py-3">
-    <ul class="nav nav-pills">
-      <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-        <div class="btn-group me-2" role="group" aria-label="First group">
-          <button
-            *ngFor="let questionIndex of curQuestionIdxList"
-            type="button"
-            class="btn btn-secondary"
-            [ngClass]="{ active: questionIndex === currentQuestionIndex }"
-            (click)="onQuestionButtonClick(questionIndex)"
-          >
-            {{ questionIndex + 1 }}
-          </button>
-        </div>
-      </div>
+    <ul class="pagination">
+      <li class="page-item" [ngClass]="{ disabled: disablePrevPage }">
+        <button
+          class="page-link"
+          aria-label="Previous"
+          [attr.aria-disabled]="disablePrevPage ? 'true' : 'false'"
+          (click)="onPreviousPageButtonClick()"
+        >
+          <span aria-hidden="true">&laquo;</span>
+        </button>
+      </li>
+      <li
+        class="page-item"
+        *ngFor="let questionIndex of questionIdxList"
+        [ngClass]="{ active: questionIndex === curQuestionIdx }"
+        (click)="onQuestionButtonClick(questionIndex)"
+      >
+        <button class="page-link">{{ questionIndex + 1 }}</button>
+      </li>
+      <li class="page-item" [ngClass]="{ disabled: disableNextPage }">
+        <button
+          class="page-link"
+          aria-label="Next"
+          [attr.aria-disabled]="disableNextPage ? 'true' : 'false'"
+          (click)="onNextPageButtonClick()"
+        >
+          <span aria-hidden="true">&raquo;</span>
+        </button>
+      </li>
     </ul>
   </header>
-  <div class="bd-cheatsheet container-fluid bg-body" *ngIf="currentQuestion">
+  <div class="bd-cheatsheet container-fluid bg-body" *ngIf="curQuestion">
     <section id="forms">
       <fieldset class="mb-3">
-        <legend>{{ currentQuestionIndex + 1 }}. {{ currentQuestion.question }}</legend>
-        <div *ngIf="currentQuestion.type === singleSelect">
-          <div class="mb-3 form-check" *ngFor="let option of currentQuestion.options">
+        <legend>{{ curQuestionIdx + 1 }}. {{ curQuestion.question }}</legend>
+        <div *ngIf="curQuestion.type === singleSelect">
+          <div class="mb-3 form-check" *ngFor="let option of curQuestion.options">
             <input
               type="radio"
               name="radios"
@@ -29,25 +44,24 @@
               [attr.id]="option.id"
               class="form-check-input"
               [ngClass]="{
-                'is-valid': showAnswer && currentQuestion.answer.includes(option.id),
-                'is-invalid':
-                  showAnswer && option.id === singleSelectAnswer && !currentQuestion.answer.includes(option.id)
+                'is-valid': showAnswer && curQuestion.answer.includes(option.id),
+                'is-invalid': showAnswer && option.id === singleSelectAnswer && !curQuestion.answer.includes(option.id)
               }"
               (click)="onRadioClick(option.id)"
             />
             <label class="form-check-label" [attr.for]="option.id">{{ option.detail }}</label>
           </div>
         </div>
-        <div *ngIf="currentQuestion.type === multipleSelect">
-          <div class="mb-3 form-check" *ngFor="let option of currentQuestion.options; let optionIndex = index">
+        <div *ngIf="curQuestion.type === multipleSelect">
+          <div class="mb-3 form-check" *ngFor="let option of curQuestion.options; let optionIndex = index">
             <input
               type="checkbox"
               [attr.id]="option.id"
               class="form-check-input"
               [ngClass]="{
-                'is-valid': showAnswer && currentQuestion.answer.includes(option.id),
+                'is-valid': showAnswer && curQuestion.answer.includes(option.id),
                 'is-invalid':
-                  showAnswer && multipleSelectAnswers[optionIndex] && !currentQuestion.answer.includes(option.id)
+                  showAnswer && multipleSelectAnswers[optionIndex] && !curQuestion.answer.includes(option.id)
               }"
               [(ngModel)]="multipleSelectAnswers[optionIndex]"
             />
@@ -68,7 +82,7 @@
       </button>
     </div>
   </div>
-  <div class="explanation" *ngIf="showAnswer && currentQuestion.explanation">
+  <div class="explanation" *ngIf="showAnswer && curQuestion.explanation">
     <div class="accordion" id="accordion">
       <div class="accordion-item">
         <h4 class="accordion-header" id="headingOne">
@@ -94,7 +108,7 @@
           [ngClass]="{ show: explanationExpand }"
         >
           <div class="accordion-body">
-            {{ currentQuestion.explanation }}
+            {{ curQuestion.explanation }}
           </div>
         </div>
       </div>
