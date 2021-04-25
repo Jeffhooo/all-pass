@@ -1,8 +1,15 @@
 [
   {
+    "id": "er-jian-project_management",
+    "name": "2021 二级建造师《建设工程施工管理》经典 100 题",
+    "description": "2021 二级建造师《建设工程施工管理》经典 100 题",
+    "pictureUrl": "assets/pic/er-jian.jpg",
+    "lastUpdateTime": "2021/04/25"
+  },
+  {
     "id": "aws-saa-introduction",
-    "name": "AWS Solutions Architect Associate Introduction",
-    "description": "AWS Solutions Architect Associate Introduction",
+    "name": "AWS Introduction Review",
+    "description": "AWS Certified Solutions Architect Official Study Guide: Associate Exam",
     "pictureUrl": "assets/pic/aws.jpeg",
     "lastUpdateTime": "2021/04/23"
   }
