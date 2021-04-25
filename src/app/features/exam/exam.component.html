@@ -1,5 +1,22 @@
 <ng-container *ngIf="ready">
-  <header class="d-flex justify-content-center py-3">
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="" (click)="onTitleClick()">{{ text['exam_title_label'] }}</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarCollapse"
+        aria-controls="navbarCollapse"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse pt-2" id="navbarCollapse"></div>
+    </div>
+  </nav>
+  <header class="d-flex justify-content-center py-3 pagination-header">
     <ul class="pagination">
       <li class="page-item" [ngClass]="{ disabled: disablePrevPage }">
         <button
