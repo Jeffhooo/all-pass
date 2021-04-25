@@ -1,5 +1,6 @@
 [
   {
+    "id": "1",
     "type": "SINGLE_SELECT",
     "question": "Which of the following describes a physical location around the world where AWS clusters data centers?",
     "options": [
@@ -8,9 +9,11 @@
       { "id": "3", "detail": "Fleet" },
       { "id": "4", "detail": "Region" }
     ],
-    "answer": ["4"]
+    "answer": ["4"],
+    "explanation": "A region is a named set of AWS resources in the same geographical area. A region comprises at least two Availability Zones. Endpoint, Collection, and Fleet do not describe a physical location around the world where AWS clusters data centers."
   },
   {
+    "id": "2",
     "type": "SINGLE_SELECT",
     "question": "Each AWS region is composed of two or more locations that offer organizations the ability to operate production systems that are more highly available, fault tolerant, andscalable than would be possible using a single data center. What are these locationscalled?",
     "options": [
@@ -19,9 +22,11 @@
       { "id": "3", "detail": "Geographic districts" },
       { "id": "4", "detail": "Compute centers" }
     ],
-    "answer": ["4"]
+    "answer": ["4"],
+    "explanation": "An Availability Zone is a distinct location within a region that is insulated from failures in other Availability Zones and provides inexpensive, low-latency network connectivity to other Availability Zones in the same region. Replication areas, geographic districts, and compute centers are not terms used to describe AWS data center locations."
   },
   {
+    "id": "3",
     "type": "SINGLE_SELECT",
     "question": "What is the deployment term for an environment that extends an existing on-premises infrastructure into the cloud to connect cloud resources to internal systems?",
     "options": [
@@ -30,9 +35,11 @@
       { "id": "3", "detail": "On-premises deployment" },
       { "id": "4", "detail": "Scatter deployment" }
     ],
-    "answer": ["2"]
+    "answer": ["2"],
+    "explanation": "A hybrid deployment is a way to connect infrastructure and applications between cloud-based resources and existing resources that are not located in the cloud. An all-in deployment refers to an environment that exclusively runs in the cloud. An on-premises deployment refers to an environment that runs exclusively in an organization’s data center."
   },
   {
+    "id": "4",
     "type": "SINGLE_SELECT",
     "question": "Which AWS Cloud service allows organizations to gain system-wide visibility into resource utilization, application performance, and operational health?",
     "options": [
@@ -41,9 +48,11 @@
       { "id": "3", "detail": "Amazon CloudWatch" },
       { "id": "4", "detail": "AWS CloudFormation" }
     ],
-    "answer": ["3"]
+    "answer": ["3"],
+    "explanation": "Amazon CloudWatch is a monitoring service for AWS Cloud resources and the applications organizations run on AWS. It allows organizations to collect and track metrics, collect and monitor log files, and set alarms. AWS IAM, Amazon SNS, and AWS CloudFormation do not provide visibility into resource utilization, application performance, and the operational health of your AWS resources."
   },
   {
+    "id": "5",
     "type": "SINGLE_SELECT",
     "question": "Which of the following AWS Cloud services is a fully managed NoSQL database service?",
     "options": [
@@ -52,9 +61,11 @@
       { "id": "3", "detail": "Amazon ElastiCache" },
       { "id": "4", "detail": "Amazon Relational Database Service (Amazon RDS)" }
     ],
-    "answer": ["2"]
+    "answer": ["2"],
+    "explanation": "Amazon DynamoDB is a fully managed, fast, and flexible NoSQL database service for all applications that need consistent, single-digit millisecond latency at any scale. Amazon SQS, Amazon ElastiCache, and Amazon RDS do not provide a NoSQL database service. Amazon SQS is a managed message queuing service. Amazon ElastiCache is a service that provides in-memory cache in the cloud. Finally, Amazon RDS provides managed relational databases."
   },
   {
+    "id": "6",
     "type": "SINGLE_SELECT",
     "question": "Your company experiences fluctuations in traffic patterns to their e-commerce website based on flash sales. What service can help your company dynamically match the required compute capacity to the spike in traffic during flash sales?",
     "options": [
@@ -63,9 +74,11 @@
       { "id": "3", "detail": "Amazon Simple Notification Service (Amazon SNS)" },
       { "id": "4", "detail": "Amazon Virtual Private Cloud (Amazon VPC)" }
     ],
-    "answer": ["1"]
+    "answer": ["1"],
+    "explanation": "Auto Scaling helps maintain application availability and allows organizations to scale Amazon Elastic Compute Cloud (Amazon EC2) capacity up or down automatically according to conditions defined for the particular workload. Not only can it be used to help ensure that the desired number of Amazon EC2 instances are running, but it also allows resources to scale in and out to match the demands of dynamic workloads. Amazon Glacier, Amazon SNS, and Amazon VPC do not provide services to scale compute capacity automatically."
   },
   {
+    "id": "7",
     "type": "SINGLE_SELECT",
     "question": "Your company provides an online photo sharing service. The development team is looking for ways to deliver image files with the lowest latency to end users so the website content is delivered with the best possible performance. What service can help speed up distribution of these image files to end users around the world?",
     "options": [
@@ -74,9 +87,11 @@
       { "id": "3", "detail": "AWS Storage Gateway" },
       { "id": "4", "detail": "Amazon CloudFront" }
     ],
-    "answer": ["4"]
+    "answer": ["4"],
+    "explanation": "Amazon CloudFront is a web service that provides a CDN to speed up distribution of your static and dynamic web content—for example, .html , .css , .php , image, and media files—to end users. Amazon CloudFront delivers content through a worldwide network of edge locations. Amazon EC2, Amazon Route 53, and AWS Storage Gateway do not provide CDN services that are required to meet the needs for the photo sharing service."
   },
   {
+    "id": "8",
     "type": "SINGLE_SELECT",
     "question": "Your company runs an Amazon Elastic Compute Cloud (Amazon EC2) instance periodically to perform a batch processing job on a large and growing filesystem. At the end of the batch job, you shut down the Amazon EC2 instance to save money but need to persist the filesystem on the Amazon EC2 instance from the previous batch runs. What AWS Cloud service can you leverage to meet these requirements?",
     "options": [
@@ -85,9 +100,11 @@
       { "id": "3", "detail": "Amazon Glacier" },
       { "id": "4", "detail": "AWS CloudFormation" }
     ],
-    "answer": ["1"]
+    "answer": ["1"],
+    "explanation": "Amazon EBS provides persistent block-level storage volumes for use with Amazon EC2 instances on the AWS Cloud. Amazon DynamoDB, Amazon Glacier, and AWS CloudFormation do not provide persistent block-level storage for Amazon EC2 instances. Amazon DynamoDB provides managed NoSQL databases. Amazon Glacier provides low- cost archival storage. AWS CloudFormation gives developers and systems administrators an easy way to create and manage a collection of related AWS resources."
   },
   {
+    "id": "9",
     "type": "SINGLE_SELECT",
     "question": "What AWS Cloud service provides a logically isolated section of the AWS Cloud where organizations can launch AWS resources in a virtual network that they define?",
     "options": [
@@ -96,9 +113,11 @@
       { "id": "3", "detail": "Amazon Virtual Private Cloud (Amazon VPC)" },
       { "id": "4", "detail": "AWS CloudFormation" }
     ],
-    "answer": ["3"]
+    "answer": ["3"],
+    "explanation": "Amazon VPC lets organizations provision a logically isolated section of the AWS Cloud where they can launch AWS resources in a virtual network that they define. Amazon SWF, Amazon Route 53, and AWS CloudFormation do not provide a virtual network. Amazon SWF helps developers build, run, and scale background jobs that have parallel or sequential steps. Amazon Route 53 provides a highly available and scalable cloud Domain Name System (DNS) web service. Amazon CloudFormation gives developers and systems administrators an easy way to create and manage a collection of related AWS resources."
   },
   {
+    "id": "10",
     "type": "SINGLE_SELECT",
     "question": "Your company provides a mobile voting application for a popular TV show, and 5 to 25 million viewers all vote in a 15-second timespan. What mechanism can you use to decouple the voting application from your back-end services that tally the votes?",
     "options": [
@@ -107,6 +126,7 @@
       { "id": "3", "detail": "Amazon Redshift" },
       { "id": "4", "detail": "Amazon Simple Notification Service (Amazon SNS)" }
     ],
-    "answer": ["2"]
+    "answer": ["2"],
+    "explanation": "Amazon SQS is a fast, reliable, scalable, fully managed message queuing service that allows organizations to decouple the components of a cloud application. With Amazon SQS, organizations can transmit any volume of data, at any level of throughput, without losing messages or requiring other services to be always available. AWS CloudTrail records AWS API calls, and Amazon Redshift is a data warehouse, neither of which would be useful as an architecture component for decoupling components. Amazon SNS provides a messaging bus complement to Amazon SQS; however, it doesn’t provide the decoupling of components necessary for this scenario."
   }
 ]

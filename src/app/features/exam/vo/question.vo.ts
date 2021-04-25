@@ -11,6 +11,8 @@ export interface QuestionVo {
    * correct option id list
    */
   answer: string[];
+
+  explanation: string;
 }
 
 export enum QuestionType {

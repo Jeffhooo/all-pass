@@ -21,7 +21,7 @@
       <fieldset class="mb-3">
         <legend>{{ currentQuestionIndex + 1 }}. {{ currentQuestion.question }}</legend>
         <div *ngIf="currentQuestion.type === singleSelect">
-          <div class="mb-3 form-check" *ngFor="let option of currentQuestion.options; let optionIndex = index">
+          <div class="mb-3 form-check" *ngFor="let option of currentQuestion.options">
             <input
               type="radio"
               name="radios"
@@ -56,7 +56,7 @@
         </div>
       </fieldset>
     </section>
-    <div class="bd-example">
+    <div>
       <button type="button" class="btn btn-primary operation-btn" (click)="onSubmitClick()">
         {{ text['exam_submit_answer_btn_label'] }}
       </button>
@@ -66,6 +66,38 @@
       <button type="button" class="btn btn-primary operation-btn" (click)="onNextClick()">
         {{ text['exam_submit_next_btn_label'] }}
       </button>
+    </div>
+  </div>
+  <div class="explanation" *ngIf="showAnswer && currentQuestion.explanation">
+    <div class="accordion" id="accordion">
+      <div class="accordion-item">
+        <h4 class="accordion-header" id="headingOne">
+          <button
+            class="accordion-button"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseOne"
+            aria-expanded="true"
+            aria-controls="collapseOne"
+            [attr.aria-expanded]="explanationExpand ? 'false' : 'true'"
+            [ngClass]="{ collapsed: explanationExpand }"
+            (click)="onExplanationButtonClick()"
+          >
+            Explanation
+          </button>
+        </h4>
+        <div
+          id="collapseOne"
+          class="accordion-collapse collapse show"
+          aria-labelledby="headingOne"
+          data-bs-parent="#accordion"
+          [ngClass]="{ show: explanationExpand }"
+        >
+          <div class="accordion-body">
+            {{ currentQuestion.explanation }}
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </ng-container>
