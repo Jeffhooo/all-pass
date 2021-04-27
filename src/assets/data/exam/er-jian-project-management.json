@@ -248,5 +248,31 @@
     ],
     "answer": ["2"],
     "explanation": "经济与管理风险,如:(1)工程资金供应条件;(2)合同风险;(3)现场与公用防火设施的可用性及其数量;(4)事故防范措施和计划;(5)人身安全控制计划;(6)信息安全控制计划等。A 属于组织风险;C 属于工程环境风险;D 属于技术风险。"
+  },
+  {
+    "id": "11",
+    "type": "SINGLE_SELECT",
+    "question": "某工程双代号网络计划如下图所示,其关键线路有( )条。",
+    "pictureUrls": ["assets/pic/er-jian-project-management/11/pic1.png"],
+    "options": [
+      {
+        "id": "A",
+        "detail": "A.1"
+      },
+      {
+        "id": "B",
+        "detail": "B.2"
+      },
+      {
+        "id": "C",
+        "detail": "C.3"
+      },
+      {
+        "id": "D",
+        "detail": "D.4"
+      }
+    ],
+    "answer": ["B"],
+    "explanation": "有两条关键线路,分别是:A-D-E-I 线路和 A-D-G-J-K 线路,工期\n为 25 天。"
   }
 ]

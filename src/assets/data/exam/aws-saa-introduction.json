@@ -3,6 +3,7 @@
     "id": "1",
     "type": "SINGLE_SELECT",
     "question": "Which of the following describes a physical location around the world where AWS clusters data centers?",
+    "pictureUrls": ["assets/pic/er-jian.jpg", "assets/pic/er-jian.jpg"],
     "options": [
       { "id": "1", "detail": "Endpoint" },
       { "id": "2", "detail": "Collection" },

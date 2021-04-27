@@ -52,6 +52,9 @@
     <section id="forms">
       <fieldset class="mb-3">
         <legend>{{ curQuestionIdx + 1 }}. {{ curQuestion.question }}</legend>
+        <div class="mb-3" *ngFor="let photoUrl of curQuestion.pictureUrls">
+          <img class="question-picture" width="100%" height="225" [attr.src]="photoUrl" />
+        </div>
         <div *ngIf="curQuestion.type === singleSelect">
           <div class="mb-3 form-check" *ngFor="let option of curQuestion.options">
             <input
