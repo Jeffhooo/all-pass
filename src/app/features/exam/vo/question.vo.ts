@@ -5,6 +5,8 @@ export interface QuestionVo {
 
   question: string;
 
+  pictureUrls: string[];
+
   options: OptionVo[];
 
   /**
