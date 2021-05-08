@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ExamService } from './service/exam.service';
-import { EXAM_TEXT } from '../../../resource/text/exam/exam.text';
-import { QuestionType, QuestionVo } from './vo/question.vo';
 import { ActivatedRoute, Router } from '@angular/router';
+import { QuestionType, QuestionVo } from '../../vo/question.vo';
+import { ExamService } from '../../service/exam.service';
+import { EXAM_TEXT } from '../../../resource/text/exam.text';
 
 @Component({
   selector: 'app-exam',
@@ -13,7 +13,10 @@ export class ExamComponent implements OnInit {
   ready = false;
   locale = 'en';
   text: { [key: string]: string } = {};
+
+  // request parameters
   examId: string;
+  questionId: string;
 
   // question
   questionList: QuestionVo[] = [];
@@ -43,6 +46,7 @@ export class ExamComponent implements OnInit {
     this.text = EXAM_TEXT[this.locale];
     this.activatedRoute.queryParams.subscribe(params => {
       this.examId = params['examId'];
+      this.questionId = params['questionId'];
       if (this.examId) {
         this.examService.getQuestionsFromRes(this.examId).subscribe(res => {
           this.questionList = res;

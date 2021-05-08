@@ -41,8 +41,11 @@
               <p class="card-text text-muted">{{ exam.description }}</p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary" (click)="onViewClick(exam.id)">
-                    {{ text['portal_view_exam_label'] }}
+                  <button type="button" class="btn btn-sm btn-outline-secondary" (click)="onStartClick(exam.id)">
+                    {{ text['portal_start_exam_label'] }}
+                  </button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary" (click)="onReviewClick(exam.id)">
+                    {{ text['portal_review_exam_label'] }}
                   </button>
                 </div>
                 <small class="text-muted">{{ exam.lastUpdateTime.toLocaleString() }}</small>
