@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ExamService } from './service/exam.service';
-import { EXAM_TEXT } from '../../../resource/text/exam/exam.text';
-import { QuestionType, QuestionVo } from './vo/question.vo';
 import { ActivatedRoute, Router } from '@angular/router';
+import { QuestionType, QuestionVo } from '../../vo/question.vo';
+import { ExamService } from '../../service/exam.service';
+import { EXAM_TEXT } from '../../../resource/text/exam.text';
+import { ExamRecordService } from '../../service/exam-record.service';
+import { ExamType } from '../../enum/exam-type';
 
 @Component({
   selector: 'app-exam',
@@ -13,7 +15,13 @@ export class ExamComponent implements OnInit {
   ready = false;
   locale = 'en';
   text: { [key: string]: string } = {};
+
+  // request parameters
   examId: string;
+  questionId: string;
+  type: ExamType;
+  readonly startType = ExamType.START;
+  readonly reviewType = ExamType.REVIEW;
 
   // question
   questionList: QuestionVo[] = [];
@@ -37,26 +45,29 @@ export class ExamComponent implements OnInit {
   disablePrevPage = true;
   disableNextPage = false;
 
-  constructor(private examService: ExamService, private activatedRoute: ActivatedRoute, private router: Router) {}
+  constructor(
+    private examService: ExamService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+    private examRecordService: ExamRecordService
+  ) {}
 
   ngOnInit() {
     this.text = EXAM_TEXT[this.locale];
     this.activatedRoute.queryParams.subscribe(params => {
       this.examId = params['examId'];
-      if (this.examId) {
-        this.examService.getQuestionsFromRes(this.examId).subscribe(res => {
-          this.questionList = res;
-          if (this.questionList.length > 0) {
-            this.curQuestion = this.questionList[0];
-            this.curQuestionIdx = 0;
-            this.curPageIdx = 0;
-            this.updatePagination();
-            this.updateQuestionIdxList();
-            this.initQuestion();
-          }
-          this.ready = true;
-        });
-      }
+      this.questionId = params['questionId'];
+      this.type = params['type'] ? params['type'] : ExamType.REVIEW;
+      this.examService.getQuestionsFromRes(this.examId).subscribe(res => {
+        this.questionList = res;
+        if (this.questionList.length > 0) {
+          this.initCurQuestion();
+          this.updatePagination();
+          this.updateQuestionIdxList();
+          this.initQuestion();
+        }
+        this.ready = true;
+      });
     });
   }
 
@@ -64,10 +75,49 @@ export class ExamComponent implements OnInit {
     this.showAnswer = false;
     this.curQuestion = this.questionList[index];
     this.curQuestionIdx = index;
+    this.initQuestion();
   }
 
   onSubmitClick() {
     this.showAnswer = true;
+    let correct = true;
+    // check answer
+    switch (this.curQuestion.type) {
+      case QuestionType.SINGLE_SELECT:
+        correct = this.singleSelectAnswer === this.curQuestion.answer[0];
+        break;
+      case QuestionType.MULTIPLE_SELECT:
+        const answers: string[] = [];
+        this.multipleSelectAnswers.forEach((select, index) => {
+          if (select) {
+            answers.push(this.curQuestion.options[index].id);
+          }
+        });
+        if (answers.length !== this.curQuestion.answer.length) {
+          correct = false;
+        } else {
+          answers.forEach(answer => {
+            if (!this.curQuestion.answer.includes(answer)) {
+              correct = false;
+              return;
+            }
+          });
+        }
+        break;
+    }
+    // update record
+    const examRecord = this.examRecordService.getQuestionRecord(this.examId);
+    const qstRecord = examRecord[this.curQuestion.id]
+      ? examRecord[this.curQuestion.id]
+      : {
+          id: this.curQuestion.id,
+          total: 0,
+          correct: 0
+        };
+    qstRecord.total++;
+    qstRecord.correct = correct ? Number(qstRecord.correct) + 1 : qstRecord.correct;
+    examRecord[this.curQuestion.id] = qstRecord;
+    this.examRecordService.setQuestionRecord(this.examId, examRecord);
   }
 
   onRadioClick(optionId: string) {
@@ -97,9 +147,48 @@ export class ExamComponent implements OnInit {
   }
 
   private initQuestion() {
-    this.singleSelectAnswer = '';
-    this.multipleSelectAnswers = [];
-    this.showAnswer = false;
+    switch (this.type) {
+      case ExamType.START:
+        this.singleSelectAnswer = '';
+        this.multipleSelectAnswers = [];
+        this.showAnswer = false;
+        break;
+      case ExamType.REVIEW:
+        switch (this.curQuestion.type) {
+          case QuestionType.SINGLE_SELECT:
+            this.singleSelectAnswer = this.curQuestion.answer[0];
+            break;
+          case QuestionType.MULTIPLE_SELECT:
+            this.curQuestion.options.forEach((option, index) => {
+              this.multipleSelectAnswers[index] = this.curQuestion.answer.includes(option.id);
+            });
+            break;
+        }
+        this.showAnswer = true;
+        this.explanationExpand = true;
+    }
+  }
+
+  private initCurQuestion() {
+    if (this.questionId) {
+      let questionIdx = 0;
+      this.questionList.forEach((question, index) => {
+        if (question.id === this.questionId) {
+          questionIdx = index;
+          return;
+        }
+      });
+      this.curQuestion = this.questionList[questionIdx];
+      this.curQuestionIdx = questionIdx;
+      this.curPageIdx = Math.floor(this.curQuestionIdx / this.pageSize);
+      this.updatePagination();
+      this.initQuestion();
+      this.updateQuestionIdxList();
+    } else {
+      this.curQuestion = this.questionList[0];
+      this.curQuestionIdx = 0;
+      this.curPageIdx = 0;
+    }
   }
 
   private updatePagination() {

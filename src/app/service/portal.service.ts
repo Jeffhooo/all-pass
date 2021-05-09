@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { ExamBasicInfoVo } from '../vo/exam-basic-info.vo';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { ExamBasicInfoVo } from '../vo/exam-basic-info.vo';
 
 @Injectable({
   providedIn: 'root'

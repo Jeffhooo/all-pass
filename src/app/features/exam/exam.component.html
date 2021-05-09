@@ -1,7 +1,7 @@
 <ng-container *ngIf="ready">
   <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand" href="" (click)="onTitleClick()">{{ text['exam_title_label'] }}</a>
+      <div class="navbar-brand" (click)="onTitleClick()">{{ text['exam_title_label'] }}</div>
       <button
         class="navbar-toggler"
         type="button"
@@ -17,7 +17,7 @@
     </div>
   </nav>
   <header class="d-flex justify-content-center py-3 pagination-header">
-    <ul class="pagination">
+    <ul class="pagination" *ngIf="type === startType">
       <li class="page-item" [ngClass]="{ disabled: disablePrevPage }">
         <button
           class="page-link"
@@ -49,48 +49,46 @@
     </ul>
   </header>
   <div class="bd-cheatsheet container-fluid bg-body" *ngIf="curQuestion">
-    <section id="forms">
-      <fieldset class="mb-3">
-        <legend>{{ curQuestionIdx + 1 }}. {{ curQuestion.question }}</legend>
-        <div class="mb-3" *ngFor="let photoUrl of curQuestion.pictureUrls">
-          <img class="question-picture" width="100%" height="225" [attr.src]="photoUrl" />
+    <fieldset class="mb-3">
+      <legend>{{ curQuestionIdx + 1 }}. {{ curQuestion.question }}</legend>
+      <div class="mb-3" *ngFor="let photoUrl of curQuestion.pictureUrls">
+        <img class="question-picture" width="100%" height="225" [attr.src]="photoUrl" />
+      </div>
+      <div *ngIf="curQuestion.type === singleSelect">
+        <div class="mb-3 form-check" *ngFor="let option of curQuestion.options">
+          <input
+            type="radio"
+            name="radios"
+            [attr.value]="option.id"
+            [attr.id]="option.id"
+            [attr.checked]="type === reviewType && curQuestion.answer.includes(option.id) ? 'checked' : null"
+            class="form-check-input"
+            [ngClass]="{
+              'is-valid': showAnswer && curQuestion.answer.includes(option.id),
+              'is-invalid': showAnswer && option.id === singleSelectAnswer && !curQuestion.answer.includes(option.id)
+            }"
+            (click)="onRadioClick(option.id)"
+          />
+          <label class="form-check-label" [attr.for]="option.id">{{ option.detail }}</label>
         </div>
-        <div *ngIf="curQuestion.type === singleSelect">
-          <div class="mb-3 form-check" *ngFor="let option of curQuestion.options">
-            <input
-              type="radio"
-              name="radios"
-              [attr.value]="option.id"
-              [attr.id]="option.id"
-              class="form-check-input"
-              [ngClass]="{
-                'is-valid': showAnswer && curQuestion.answer.includes(option.id),
-                'is-invalid': showAnswer && option.id === singleSelectAnswer && !curQuestion.answer.includes(option.id)
-              }"
-              (click)="onRadioClick(option.id)"
-            />
-            <label class="form-check-label" [attr.for]="option.id">{{ option.detail }}</label>
-          </div>
+      </div>
+      <div *ngIf="curQuestion.type === multipleSelect">
+        <div class="mb-3 form-check" *ngFor="let option of curQuestion.options; let optionIndex = index">
+          <input
+            type="checkbox"
+            [attr.id]="option.id"
+            class="form-check-input"
+            [ngClass]="{
+              'is-valid': showAnswer && curQuestion.answer.includes(option.id),
+              'is-invalid': showAnswer && multipleSelectAnswers[optionIndex] && !curQuestion.answer.includes(option.id)
+            }"
+            [(ngModel)]="multipleSelectAnswers[optionIndex]"
+          />
+          <label class="form-check-label" [attr.for]="option.id">{{ option.detail }}</label>
         </div>
-        <div *ngIf="curQuestion.type === multipleSelect">
-          <div class="mb-3 form-check" *ngFor="let option of curQuestion.options; let optionIndex = index">
-            <input
-              type="checkbox"
-              [attr.id]="option.id"
-              class="form-check-input"
-              [ngClass]="{
-                'is-valid': showAnswer && curQuestion.answer.includes(option.id),
-                'is-invalid':
-                  showAnswer && multipleSelectAnswers[optionIndex] && !curQuestion.answer.includes(option.id)
-              }"
-              [(ngModel)]="multipleSelectAnswers[optionIndex]"
-            />
-            <label class="form-check-label" [attr.for]="option.id">{{ option.detail }}</label>
-          </div>
-        </div>
-      </fieldset>
-    </section>
-    <div>
+      </div>
+    </fieldset>
+    <div *ngIf="type === startType">
       <button type="button" class="btn btn-primary operation-btn" (click)="onSubmitClick()">
         {{ text['exam_submit_answer_btn_label'] }}
       </button>

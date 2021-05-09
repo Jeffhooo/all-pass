@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { PortalService } from './service/portal.service';
-import { ExamBasicInfoVo } from './vo/exam-basic-info.vo';
-import { PORTAL_TEXT } from '../../../resource/text/portal/portal.text';
 import { Router } from '@angular/router';
+import { ExamBasicInfoVo } from '../../vo/exam-basic-info.vo';
+import { PortalService } from '../../service/portal.service';
+import { PORTAL_TEXT } from '../../../resource/text/portal.text';
+import { ExamType } from '../../enum/exam-type';
 
 @Component({
   selector: 'app-portal',
@@ -31,12 +32,15 @@ export class PortalComponent implements OnInit {
     });
   }
 
-  onViewClick(id: string) {
-    this.router.navigate(['/exam'], { queryParams: { examId: id } });
+  onStartClick(id: string) {
+    this.router.navigate(['/exam'], { queryParams: { examId: id, type: ExamType.START } });
+  }
+
+  onReviewClick(id: string) {
+    this.router.navigate(['/review'], { queryParams: { examId: id } });
   }
 
   onSearchButtonClick() {
-    console.log('onSearchButtonClick, searchKeyword: ', this.searchKeyword);
     if (this.searchKeyword) {
       const filteredExams: ExamBasicInfoVo[] = [];
       for (const exam of this.allExams) {

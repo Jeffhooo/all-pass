@@ -1,0 +1,56 @@
+<ng-container *ngIf="ready">
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <div class="container-fluid">
+      <div class="navbar-brand" (click)="onTitleClick()">{{ text['review_title_label'] }}</div>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarCollapse"
+        aria-controls="navbarCollapse"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse pt-2" id="navbarCollapse">
+        <form class="d-flex">
+          <input
+            class="form-control me-2"
+            type="search"
+            placeholder="Search"
+            aria-label="Search"
+            name="searchKeyword"
+            [(ngModel)]="searchKeyword"
+          />
+          <button class="btn btn-outline-success" type="submit" (click)="onSearchButtonClick()">
+            {{ text['review_search_button_label'] }}
+          </button>
+        </form>
+      </div>
+    </div>
+  </nav>
+  <div class="bd-cheatsheet container-fluid bg-body review-list">
+    <div class="list-group">
+      <div *ngFor="let reviewItem of filterItemList; let itemIdx = index">
+        <div
+          class="list-group-item list-group-item-action review-item"
+          [ngClass]="{ 'list-group-item-secondary': itemIdx % 2 === 0 }"
+          (click)="onReviewItemClick(reviewItem.id)"
+        >
+          <span
+            class="badge rounded-pill"
+            [ngClass]="{
+              'bg-danger': reviewItem.total !== 0 && reviewItem.correct / reviewItem.total < 0.5,
+              'bg-warning': reviewItem.total !== 0 && 0.8 > reviewItem.correct / reviewItem.total >= 0.5,
+              'bg-success': reviewItem.total !== 0 && reviewItem.correct / reviewItem.total >= 0.8,
+              'bg-secondary': reviewItem.total == 0
+            }"
+            >{{ reviewItem.correct + '/' + reviewItem.total }}</span
+          >
+          {{ reviewItem.id + '. ' + reviewItem.question }}
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

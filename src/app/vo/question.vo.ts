@@ -1,6 +1,8 @@
 import { OptionVo } from './option.vo';
 
 export interface QuestionVo {
+  id: string;
+
   type: QuestionType;
 
   question: string;
