@@ -20,6 +20,16 @@
     <div class="list-group">
       <div *ngFor="let reviewItem of reviewItemList">
         <div class="list-group-item list-group-item-action review-item" (click)="onReviewItemClick(reviewItem.id)">
+          <span
+            class="badge rounded-pill"
+            [ngClass]="{
+              'bg-danger': reviewItem.total !== 0 && reviewItem.correct / reviewItem.total < 0.5,
+              'bg-warning': reviewItem.total !== 0 && 0.8 > reviewItem.correct / reviewItem.total >= 0.5,
+              'bg-success': reviewItem.total !== 0 && reviewItem.correct / reviewItem.total >= 0.8,
+              'bg-secondary': reviewItem.total == 0
+            }"
+            >{{ reviewItem.correct + '/' + reviewItem.total }}</span
+          >
           {{ reviewItem.id + '. ' + reviewItem.question }}
         </div>
       </div>
