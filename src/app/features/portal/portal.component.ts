@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ExamBasicInfoVo } from '../../vo/exam-basic-info.vo';
 import { PortalService } from '../../service/portal.service';
 import { PORTAL_TEXT } from '../../../resource/text/portal.text';
+import { ExamType } from '../../enum/exam-type';
 
 @Component({
   selector: 'app-portal',
@@ -32,7 +33,7 @@ export class PortalComponent implements OnInit {
   }
 
   onStartClick(id: string) {
-    this.router.navigate(['/exam'], { queryParams: { examId: id } });
+    this.router.navigate(['/exam'], { queryParams: { examId: id, type: ExamType.START } });
   }
 
   onReviewClick(id: string) {

@@ -3,8 +3,9 @@ import { ReviewItemVo } from '../../vo/review-item.vo';
 import { REVIEW_TEXT } from '../../../resource/text/review.text';
 import { ExamService } from '../../service/exam.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { QuestionRecord } from '../../vo/question-record';
 import { ExamRecordService } from '../../service/exam-record.service';
+import { ExamType } from '../../enum/exam-type';
+import { ExamBasicInfoVo } from '../../vo/exam-basic-info.vo';
 
 @Component({
   selector: 'app-review',
@@ -18,6 +19,8 @@ export class ReviewComponent implements OnInit {
 
   examId: string;
   reviewItemList: ReviewItemVo[] = [];
+  filterItemList: ReviewItemVo[] = [];
+  searchKeyword: string = '';
 
   constructor(
     private examService: ExamService,
@@ -43,6 +46,7 @@ export class ReviewComponent implements OnInit {
           });
         }
         this.reviewItemList = reviewItemList;
+        this.filterItemList = this.reviewItemList;
         this.ready = true;
       });
     });
@@ -53,6 +57,24 @@ export class ReviewComponent implements OnInit {
   }
 
   onReviewItemClick(questionId: string) {
-    this.router.navigate(['/exam'], { queryParams: { examId: this.examId, questionId } });
+    this.router.navigate(['/exam'], { queryParams: { examId: this.examId, questionId, type: ExamType.REVIEW } });
+  }
+
+  onSearchButtonClick() {
+    if (this.searchKeyword) {
+      const filterItemList: ReviewItemVo[] = [];
+      for (const question of this.reviewItemList) {
+        if (this.matchKeyword(question.question, this.searchKeyword)) {
+          filterItemList.push(question);
+        }
+      }
+      this.filterItemList = filterItemList;
+    } else {
+      this.filterItemList = this.reviewItemList;
+    }
+  }
+
+  private matchKeyword(text: string, keyword: string): boolean {
+    return keyword && text && text.toUpperCase().includes(keyword.toUpperCase().trim());
   }
 }

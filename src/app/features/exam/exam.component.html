@@ -1,7 +1,7 @@
 <ng-container *ngIf="ready">
   <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand" href="" (click)="onTitleClick()">{{ text['exam_title_label'] }}</a>
+      <div class="navbar-brand" (click)="onTitleClick()">{{ text['exam_title_label'] }}</div>
       <button
         class="navbar-toggler"
         type="button"
@@ -17,7 +17,7 @@
     </div>
   </nav>
   <header class="d-flex justify-content-center py-3 pagination-header">
-    <ul class="pagination">
+    <ul class="pagination" *ngIf="type === startType">
       <li class="page-item" [ngClass]="{ disabled: disablePrevPage }">
         <button
           class="page-link"
@@ -61,6 +61,7 @@
             name="radios"
             [attr.value]="option.id"
             [attr.id]="option.id"
+            [attr.checked]="type === reviewType && curQuestion.answer.includes(option.id) ? 'checked' : null"
             class="form-check-input"
             [ngClass]="{
               'is-valid': showAnswer && curQuestion.answer.includes(option.id),
@@ -87,7 +88,7 @@
         </div>
       </div>
     </fieldset>
-    <div>
+    <div *ngIf="type === startType">
       <button type="button" class="btn btn-primary operation-btn" (click)="onSubmitClick()">
         {{ text['exam_submit_answer_btn_label'] }}
       </button>
